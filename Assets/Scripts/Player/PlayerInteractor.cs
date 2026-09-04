@@ -6,6 +6,7 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactMask;
     [SerializeField] private Camera playerCamera;
+    [SerializeField] private InteractionPromptUI promptUI;
 
     private InputAction interactAction;
     private IInteractable currentTarget;
@@ -40,6 +41,18 @@ public class PlayerInteractor : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactMask))
         {
             currentTarget = hit.collider.GetComponentInParent<IInteractable>(); 
+        }
+
+        if(promptUI != null)
+        {
+            if (currentTarget != null && currentTarget.CanInteract)
+            {
+                promptUI.Show(currentTarget.Prompt + "- E");
+            }
+            else
+            {
+                promptUI.Hide();
+            }
         }   
     
     
